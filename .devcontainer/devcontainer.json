@@ -11,6 +11,16 @@
 		"-v", "${env:HOME}/.oh-my-zsh:/home/jboss/.oh-my-zsh",
 		"-v", "${env:HOME}/.helm:/home/jboss/.helm",
 		"-v", "${env:HOME}/.ssh:/home/jboss/.ssh",
+		// When opened as a submodule, the .git file references the 
+		// .git directory in the (relative) directory above (at least how)
+		// the repo is setup now).  This command allows us to mount the .git 
+		// directory in the same relative location so we can checkin 
+		// changes to the submodule repo from the devcontainer.
+		// NOTE: If this is run from a non-submodule the .git mount will
+		// not point to anything and will be ignored.
+		"-v", "${localWorkspaceFolder}/../.git:/workspaces/.git",
+		// mount the maven cache locally
+		"-v", "${localWorkspaceFolder}/../.m2/:/home/jboss/.m2",
 		// Used for AWS based clusters
 		"-e", "AWS_PROFILE=redhat",
 		"-e", "REGION=ap-southeast-2"
