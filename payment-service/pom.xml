@@ -87,6 +87,15 @@
         <version>${quarkus-plugin.version}</version>
         <executions>
           <execution>
+            <id>default-compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>prepare</goal>
+              <goal>prepare-tests</goal>
+              <goal>build</goal>
+            </goals>
+          </execution>
+          <execution>
             <goals>
               <goal>prepare</goal>
               <goal>prepare-tests</goal>
