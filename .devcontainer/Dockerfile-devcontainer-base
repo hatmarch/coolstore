@@ -4,12 +4,12 @@
 # This is the base dockerfile to be used with the BUILDKIT to build the 
 # image that the .devcontainer docker image is based on
 # 
-FROM quay.io/mhildenb/cloudnative-workspaces-quarkus:1.0
+FROM registry.access.redhat.com/ubi8/openjdk-11:latest
 
 USER root
 
 # command line for this would look something like
-# docker build --progress=plain --secret id=myuser,src=docker-secrets/myuser.txt --secret id=mypass,src=docker-secrets/mypass.txt -t quay.io/mhildenb/comparison-demo-base:1.0 .
+# DOCKER_BUILDKIT=1 docker build --progress=plain --secret id=myuser,src=docker-secrets/myuser.txt --secret id=mypass,src=docker-secrets/mypass.txt -f Dockerfile-devcontainer-base -t quay.io/mhildenb/dev-demo-base:1.0 .
 RUN --mount=type=secret,id=myuser --mount=type=secret,id=mypass \
     subscription-manager register --username=$(cat /run/secrets/myuser) \
     --password=$(cat /run/secrets/mypass) --auto-attach
