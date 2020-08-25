@@ -67,8 +67,8 @@
           </dependency>
         </dependencies>
         <configuration>
-          <mainClass>bogus</mainClass>
           <container>
+            <mainClass>bogus</mainClass>
             <ports>
               <port>8080</port>
             </ports>
