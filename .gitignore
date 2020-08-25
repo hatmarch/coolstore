@@ -11,3 +11,4 @@ coolstore-ui/tmp
 .vscode
 docker-secrets/
 Icon
+.factorypath
