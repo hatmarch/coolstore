@@ -1,0 +1,5 @@
+FROM quay.io/mhildenb/demo-cache:latest as cachier
+
+FROM registry.redhat.io/codeready-workspaces/plugin-java11-rhel8@sha256:cc6641ec663307133274080b6af1ea4e4cd01bb34a013cda5c42b3d4213a9c72
+
+COPY --from=cachier /home/jboss/.m2 /home/jboss/m2-cache
