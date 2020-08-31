@@ -8,6 +8,7 @@ projects:
       type: git
       branch: master
 components:
+#  - id: mhildenb/crw-maven/1.0
   - id: redhat/quarkus-java11/latest
     type: chePlugin
   - mountSources: true
@@ -23,8 +24,7 @@ components:
     volumes:
       - name: m2
         containerPath: /home/jboss/.m2
-    image: >-
-      registry.redhat.io/codeready-workspaces/plugin-java11-rhel8@sha256:cc6641ec663307133274080b6af1ea4e4cd01bb34a013cda5c42b3d4213a9c72
+    image: quay.io/mhildenb/crw-maven:1.0
     alias: maven
     env:
       - value: >-
@@ -48,6 +48,12 @@ commands:
       - workdir: '${CHE_PROJECTS_ROOT}/coolstore/payment-service'
         type: exec
         command: 'mvn compile quarkus:dev'
+        component: maven
+  - name: 3. Seed Cache
+    actions:
+      - workdir: '/home/jboss'
+        type: exec
+        command: 'cp -rf m2-cache/* .m2'
         component: maven
   - name: Attach remote debugger
     actions:
