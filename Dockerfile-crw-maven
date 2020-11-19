@@ -1,5 +1,16 @@
 FROM quay.io/mhildenb/demo-cache:latest as cachier
 
-FROM registry.redhat.io/codeready-workspaces/plugin-java11-rhel8@sha256:cc6641ec663307133274080b6af1ea4e4cd01bb34a013cda5c42b3d4213a9c72
+FROM registry.redhat.io/codeready-workspaces/plugin-java11-rhel8@sha256:1215feb285cfc47ce5d7f494efb9596766447fde6f358b99b27f1d9b85c62f99
 
 COPY --from=cachier /home/jboss/.m2 /home/jboss/m2-cache
+
+USER root
+
+# install knative client (kn func support)
+RUN wget -qO- https://mirror.openshift.com/pub/openshift-v4/clients/serverless/0.17.3/kn-linux-amd64-0.17.3.tar.gz | tar -zxvf - -C /usr/local/bin ./kn && chmod 755 /usr/local/bin/kn && \
+# overwrite existing oc with the absolute newest version of the openshift client
+    rm /usr/bin/oc || true && rm /usr/bin/kubectl || true && \
+    curl -L https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz | \
+    tar -xvzf - -C /usr/bin/ oc && chmod 755 /usr/bin/oc && ln -s /usr/bin/oc /usr/bin/kubectl
+
+USER jboss
