@@ -4,7 +4,7 @@ metadata:
 projects:
   - name: coolstore
     source:
-      location: 'http://gogs.dev-demo-cicd:3000/gogs/coolstore.git'
+      location: 'http://gitea.kn-demo-cicd:3000/gitea/coolstore.git'
       type: git
       branch: master
 components:
@@ -15,10 +15,8 @@ components:
     endpoints:
       - name: quarkus-development-server
         port: 8080
-      - name: hello-greeting-endpoint
-        port: 8080
-        attributes:
-          path: /hello/greeting/che-user
+        # attributes:
+        #   path: /hello/greeting/che-user
     memoryLimit: 512Mi
     type: dockerimage
     volumes:
