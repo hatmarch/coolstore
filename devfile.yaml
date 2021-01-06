@@ -6,7 +6,7 @@ projects:
     source:
       location: 'http://gitea.kn-demo-cicd:3000/gitea/coolstore.git'
       type: git
-      branch: master
+      branch: serverless-demo
 components:
 #  - id: mhildenb/crw-maven/1.0
   - id: redhat/quarkus-java11/latest
