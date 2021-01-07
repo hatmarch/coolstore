@@ -22,7 +22,7 @@ components:
     volumes:
       - name: m2
         containerPath: /home/jboss/.m2
-    image: quay.io/mhildenb/crw-maven:1.3
+    image: quay.io/mhildenb/crw-maven:1.3.2
     alias: maven
     env:
       - value: >-
