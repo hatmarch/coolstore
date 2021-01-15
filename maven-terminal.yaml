@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: maven
+  labels:
+    app: tools
+spec:
+  serviceAccountName: che-workspace
+  containers:
+  - name: maven
+    image: quay.io/mhildenb/kn-demo-crw:1.0.1
+    imagePullPolicy: Always
+    securityContext:
+        runAsUser: 1000
+    env:
+      - value: >-
+          -XX:MaxRAMPercentage=50.0 -XX:+UseParallelGC -XX:MinHeapFreeRatio=10
+          -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4
+          -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true
+          -Xms20m -Djava.security.egd=file:/dev/./urandom
+          -Duser.home=/home/jboss
+        name: JAVA_OPTS
+      - value: $(JAVA_OPTS)
+        name: MAVEN_OPTS
+      # override the location of the bootstrap service suitably for the CRW
+      - name: mp.messaging.outgoing.payments.bootstrap.servers
+        value: "my-cluster-kafka-bootstrap.kn-demo-dev:9092"
+    # resources:
+    #   limits: 
+    #     cpu: "1000m"
+    #     memory: 1Gi
+    #   requests:
+    #     cpu: "512m"
+    #     memory: "512Mi"
+    #   workingDir: /opt/developer
+    volumeMounts:
+      - name: socket
+        mountPath: /var/run/docker.sock
+      # - name: m2
+      #   mountPath: /home/jboss/.m2
+      #   subPath: workspacet79rsv8fch3heltf/m2
+  volumes:
+    # FIXME: Make the claim explicitly?
+    # - name: m2
+    #   persistentVolumeClaim:
+    #     claimName: claim-che-workspace-workspacet79rsv8fch3heltf
+    - name: socket
+      hostPath:
+          path: /var/run/docker.sock

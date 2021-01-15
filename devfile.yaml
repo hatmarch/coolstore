@@ -11,32 +11,13 @@ components:
 #  - id: mhildenb/crw-maven/1.0
   - id: redhat/quarkus-java11/latest
     type: chePlugin
-  - mountSources: true
-    endpoints:
-      - name: quarkus-development-server
-        port: 8080
-        # attributes:
-        #   path: /hello/greeting/che-user
-    memoryLimit: 512Mi
-    type: dockerimage
+  - alias: maven
+    mountSources: true
+    type: kubernetes
+    reference: maven-terminal.yaml
     volumes:
       - name: m2
         containerPath: /home/jboss/.m2
-    image: quay.io/mhildenb/crw-maven:1.3.3
-    alias: maven
-    env:
-      - value: >-
-          -XX:MaxRAMPercentage=50.0 -XX:+UseParallelGC -XX:MinHeapFreeRatio=10
-          -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4
-          -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true
-          -Xms20m -Djava.security.egd=file:/dev/./urandom
-          -Duser.home=/home/jboss
-        name: JAVA_OPTS
-      - value: $(JAVA_OPTS)
-        name: MAVEN_OPTS
-      # override the location of the bootstrap service suitably for the CRW
-      - name: mp.messaging.outgoing.payments.bootstrap.servers
-        value: "my-cluster-kafka-bootstrap.kn-demo-dev:9092"
 commands:
   - name: 1. Package the application
     actions:
