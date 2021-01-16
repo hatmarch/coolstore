@@ -8,7 +8,6 @@ projects:
       type: git
       branch: serverless-demo
 components:
-#  - id: mhildenb/crw-maven/1.0
   - id: redhat/quarkus-java11/latest
     type: chePlugin
   - alias: maven

@@ -5,11 +5,15 @@ metadata:
   labels:
     app: tools
 spec:
+  # NOTE: This appears to get merged into boilerplate container definitiions 
+  # that comes out of the devfile.yaml
   serviceAccountName: che-workspace
   containers:
   - name: maven
     image: quay.io/mhildenb/kn-demo-crw:1.0.1
     imagePullPolicy: Always
+    # NOTE: This is not strictly necessary, but left for example of
+    # running with special scc permissions
     securityContext:
         runAsUser: 1000
     env:
@@ -33,17 +37,14 @@ spec:
     #     cpu: "512m"
     #     memory: "512Mi"
     #   workingDir: /opt/developer
-    volumeMounts:
-      - name: socket
-        mountPath: /var/run/docker.sock
+    # NOTE: No need to specify volume mounts here, especially for stuff 
+    # that CRW manages.  This can be done in the devfile
+    #volumeMounts:
       # - name: m2
       #   mountPath: /home/jboss/.m2
       #   subPath: workspacet79rsv8fch3heltf/m2
-  volumes:
-    # FIXME: Make the claim explicitly?
+  #volumes:
+    # This is just an example of how to mount a volume
     # - name: m2
     #   persistentVolumeClaim:
     #     claimName: claim-che-workspace-workspacet79rsv8fch3heltf
-    - name: socket
-      hostPath:
-          path: /var/run/docker.sock
