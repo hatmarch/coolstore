@@ -10,12 +10,14 @@ spec:
   serviceAccountName: che-workspace
   containers:
   - name: maven
-    image: quay.io/mhildenb/kn-demo-crw:1.0.1
+    image: quay.io/mhildenb/kn-demo-crw:latest
     imagePullPolicy: Always
     # NOTE: This is not strictly necessary, but left for example of
     # running with special scc permissions
-    securityContext:
-        runAsUser: 1000
+    # FIXME: Running as explicit user can cause issues with the project directory and it's ownership 
+    # Need to find out more on how crw does the git clone command and with which user
+    # securityContext:
+    #     runAsUser: 1000
     env:
       - value: >-
           -XX:MaxRAMPercentage=50.0 -XX:+UseParallelGC -XX:MinHeapFreeRatio=10
