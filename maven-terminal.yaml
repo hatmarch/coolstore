@@ -24,6 +24,7 @@ spec:
           -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4
           -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true
           -Xms20m -Djava.security.egd=file:/dev/./urandom
+          -Xmx1024M -Xss128M -XX:MetaspaceSize=512M -XX:MaxMetaspaceSize=1024M -XX:+CMSClassUnloadingEnabled
           -Duser.home=/home/jboss
         name: JAVA_OPTS
       - value: $(JAVA_OPTS)
