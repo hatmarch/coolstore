@@ -1,4 +1,5 @@
 POST http://localhost:8081/api/products
+# POST http://catalog-coolstore-test.apps.cluster-6141.6141.sandbox1484.opentlc.com/api/products
 Content-Type: application/json
 
 [
