@@ -10,7 +10,9 @@ import com.redhat.cloudnative.model.Product;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CatalogService {
@@ -45,6 +47,12 @@ public class CatalogService {
         }
         return productList; 
     }
+
+    @Transactional
+    public void saveProduct(Product product) throws DataAccessException
+    {
+        this.repository.save(product);
+    } 
 
     //TODO: Add Callback Factory Component
 

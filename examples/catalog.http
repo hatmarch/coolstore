@@ -3,12 +3,14 @@ Content-Type: application/json
 
 [
     {
+        "itemId": "1",
         "name": "Test Product 1",
         "desc": "Test Desc 1",
         "price": 34.99,
         "quantity": 10
     },
     {
+        "itemId": "2",
         "name": "Test Product 2",
         "desc": "Test Desc 2",
         "price": 24.99,
@@ -16,3 +18,30 @@ Content-Type: application/json
     }
 ]
 
+###
+
+GET http://localhost:8081/api/products
+
+###
+
+GET http://localhost:8081/api/product/1
+
+###
+
+POST http://localhost:8081/api/products
+Content-Type: application/json
+
+[
+    {
+        "itemId": "10",
+        "name": "Test Product 1",
+        "desc": "Test Desc 1",
+        "price": 34.99
+    },
+    {
+        "itemId": "20",
+        "name": "Test Product 2",
+        "desc": "Test Desc 2",
+        "price": 24.99
+    }
+]

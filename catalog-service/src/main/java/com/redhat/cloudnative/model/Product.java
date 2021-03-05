@@ -2,6 +2,8 @@ package com.redhat.cloudnative.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = -7304814269819778382L;
@@ -22,6 +24,13 @@ public class Product implements Serializable {
 		this.desc = desc;
 		this.price = price;
 	}
+
+	@JsonIgnore
+	public Boolean isNew()
+	{
+		return ((this.itemId == null) || (this.itemId.isEmpty()));
+	}
+
 	public String getItemId() {
 		return itemId;
 	}

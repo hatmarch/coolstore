@@ -51,10 +51,10 @@ public class CatalogEndpoint {
 
         Logger logger = LoggerFactory.getLogger(CatalogEndpoint.class);
         for (Product product : products) {
-            logger.info("Got product {}", product.toString());
+            catalogService.saveProduct(product);
+
+            logger.info("Saved product {}", product.toString());
         }
-        // FIXME: Save
-        //this.userService.saveUser(user);
 
         return new ResponseEntity<List<Product>>(products, headers, HttpStatus.CREATED);
     }

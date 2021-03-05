@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,12 +33,12 @@ public class CatalogEndpointTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-//TODO: Add ClassRule for HoverFly Inventory simulation
+
     @ClassRule
     public static HoverflyRule hoverflyRule = HoverflyRule.inSimulationMode(dsl(
             service("inventory:8080")
     //                    .andDelay(2500, TimeUnit.MILLISECONDS).forMethod("GET")
-                    .get(startsWith("/services/inventory"))
+                    .get(startsWith("/api/inventory"))
     //                    .willReturn(serverError())
                    // .willReturn(success(json(new Inventory("9999",9999))))
                    .willReturn(success("[{\"itemId\":\"329199\",\"quantity\":9999}]", "application/json"))
@@ -45,9 +46,9 @@ public class CatalogEndpointTest {
     ));
 
     @Test
-    public void test_retriving_one_proudct() {
+    public void test_retriving_one_product() {
         ResponseEntity<Product> response
-                = restTemplate.getForEntity("/services/product/329199", Product.class);
+                = restTemplate.getForEntity("/api/product/329199", Product.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody())
                 .returns("329199",Product::getItemId)
@@ -62,7 +63,7 @@ public class CatalogEndpointTest {
     public void check_that_endpoint_returns_a_correct_list() {
 
         ResponseEntity<List<Product>> rateResponse =
-                restTemplate.exchange("/services/products",
+                restTemplate.exchange("/api/products",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Product>>() {
                         });
 
@@ -80,5 +81,31 @@ public class CatalogEndpointTest {
                 .returns(9999,Product::getQuantity)
                 .returns(34.99,Product::getPrice);
     }
+
+    @Test
+    public void check_that_save_and_retrieve_works() {
+            Product testProd = new Product();
+            testProd.setItemId("10");
+            testProd.setDesc("Test Desc");
+            testProd.setName("Test Name");
+            List<Product> prodList = List.of(testProd);
+
+            // Save
+            ResponseEntity<List<Product>> postResponse = restTemplate.exchange("/api/products", HttpMethod.POST, 
+            new HttpEntity(prodList), new ParameterizedTypeReference<List<Product>>(){}); 
+    
+            assertThat(postResponse.getBody()).isNotNull();
+            assertThat(postResponse.getBody()).isNotEmpty();
+
+            // Look for entity
+            ResponseEntity<Product> readResponse =
+            restTemplate.exchange("/api/product/10",
+                    HttpMethod.GET, null, new ParameterizedTypeReference<Product>() {
+                    });
+
+            Product readProduct = readResponse.getBody();
+            assertThat(readProduct).isNotNull();
+            assertThat(readProduct.getName().equals("Test Name"));
+        }
 
 }
