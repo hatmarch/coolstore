@@ -16,3 +16,6 @@ Content-Type: application/json
         "quantity": 20
     }
 ]
+
+###
+GET http://localhost:8080/api/inventory

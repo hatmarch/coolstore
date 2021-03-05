@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.json.Json;
+import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -38,7 +39,13 @@ public class InventoryResource {
         .collect(Collectors.toList());
     }
 
+    private Boolean isAvailable( String itemId )
+    {
+        return !getAvailability(itemId).isEmpty();
+    }
+
     @POST
+    @Transactional
     @Produces(MediaType.APPLICATION_JSON)
     public List<Inventory> post(List<Inventory> inventoryList) 
     {
@@ -46,6 +53,16 @@ public class InventoryResource {
 
         for( var inv : inventoryList) {
             log.infof("Got inventory with itemId: %s", inv.itemId);
+            
+            List<Inventory> existing = Inventory.list("itemId", inv.itemId);
+            if( existing.isEmpty() )
+            {
+                inv.persist();
+            }
+            else
+            {
+                log.infof("FIXME: Need to update existing record id: %d",existing.get(0).id);
+            }
         }
 
         return inventoryList;
