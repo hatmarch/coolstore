@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import feign.hystrix.FallbackFactory;
 
-@FeignClient(name="inventory",fallbackFactory = InventoryClient.InventoryClientFallbackFactory.class)
+@FeignClient(name="inventory",url="${inventory.ribbon.listOfServers}",fallbackFactory = InventoryClient.InventoryClientFallbackFactory.class)
 public interface InventoryClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/inventory/{itemId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
