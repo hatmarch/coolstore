@@ -39,29 +39,31 @@ public class InventoryResource {
         .collect(Collectors.toList());
     }
 
-    private Boolean isAvailable( String itemId )
-    {
-        return !getAvailability(itemId).isEmpty();
-    }
-
     @POST
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
     public List<Inventory> post(List<Inventory> inventoryList) 
     {
-        var log = Logger.getLogger("InventoryResource");
+        var log = Logger.getLogger(InventoryResource.class);
 
         for( var inv : inventoryList) {
-            log.infof("Got inventory with itemId: %s", inv.itemId);
+            log.infof("Processing inventory with itemId: %s", inv.itemId);
             
-            List<Inventory> existing = Inventory.list("itemId", inv.itemId);
+            var existing = Inventory.findByItemId(inv.itemId);
             if( existing.isEmpty() )
             {
                 inv.persist();
+                log.infof("Created new inventory with id %d (itemId: %s)",
+                    inv.id, inv.itemId );
             }
             else
             {
-                log.infof("FIXME: Need to update existing record id: %d",existing.get(0).id);
+                log.infof("Updating existing record id: %d (itemId: %s)",
+                    existing.get().id, existing.get().itemId);
+                
+                // change the id so that the record can be updated
+                existing.get().setEqual(inv);
+                inv.id = existing.get().id;
             }
         }
 

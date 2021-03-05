@@ -5,17 +5,18 @@ Content-Type: application/json
 [
     {
         "itemId": "1",
-        "location": "Boston",
+        "location": "Boston1",
         "link": "http://www.yahoo.com/",
         "quantity": 10
     },
     {
         "itemId": "2",
-        "location": "New York",
+        "location": "New York2",
         "link": "http://www.google.com/",
         "quantity": 20
     }
 ]
 
 ###
+
 GET http://localhost:8080/api/inventory

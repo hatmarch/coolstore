@@ -1,7 +1,8 @@
 package com.redhat.cloudnative;
 
+import java.util.Optional;
+
 import javax.persistence.Cacheable;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
@@ -19,4 +20,15 @@ public class Inventory extends PanacheEntity {
 
     }
 
+    public static Optional<Inventory> findByItemId(String itemId){
+        return find("itemId", itemId).firstResultOptional();
+    }
+
+    // Copies non-Id based fields from other into this entity
+    public void setEqual( Inventory other ) {
+        itemId = other.itemId;
+        location = other.location;
+        quantity = other.quantity;
+        link = other.link;
+    }
 }
