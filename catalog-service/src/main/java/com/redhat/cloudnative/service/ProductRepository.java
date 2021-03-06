@@ -38,7 +38,7 @@ public class ProductRepository {
     public Product findById(String id) {
         Map<String, Object> params = new HashMap<>();
         params.put("itemId", id);
-        return jdbcTemplate.queryForObject("SELECT * FROM catalog WHERE itemId=:itemId",params, rowMapper);
+        return jdbcTemplate.queryForObject("SELECT * FROM catalog WHERE itemId = ':itemId'",params, rowMapper);
     }
 
     public Boolean hasProduct(Product product) {
@@ -68,7 +68,7 @@ public class ProductRepository {
             // by the catalog database
             this.jdbcTemplate.update(
                 "INSERT INTO catalog (itemId, name, description, price)"
-                + " VALUES (:itemId, :name, :desc, :price)",
+                + " VALUES (':itemId, :name, :desc, :price)",
                 parameterSource);
         } 
         else 
