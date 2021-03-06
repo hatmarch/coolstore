@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -36,15 +35,15 @@ public class ProductRepository {
     }
 
     public Product findById(String id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("itemId", id);
-        return jdbcTemplate.queryForObject("SELECT * FROM catalog WHERE itemId = ':itemId'",params, rowMapper);
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("itemId", id);
+        return jdbcTemplate.queryForObject("SELECT * FROM catalog WHERE itemId = :itemId",params,rowMapper);
     }
 
     public Boolean hasProduct(Product product) {
         Boolean result = false;
         try{
-            result = ( findById(product.getItemId()) == null );
+            result = ( findById(product.getItemId()) != null );
         }
         catch (EmptyResultDataAccessException e)
         {
@@ -68,14 +67,14 @@ public class ProductRepository {
             // by the catalog database
             this.jdbcTemplate.update(
                 "INSERT INTO catalog (itemId, name, description, price)"
-                + " VALUES (':itemId, :name, :desc, :price)",
+                + " VALUES (:itemId, :name, :desc, :price)",
                 parameterSource);
         } 
         else 
         {
             // update
             this.jdbcTemplate.update(
-                "UPDATE catalog SET name=:name, description=:desc, price=:price, " +
+                "UPDATE catalog SET name=:name, description=:desc, price=:price " +
                     "WHERE itemId=:itemId",
                 parameterSource);
         }
