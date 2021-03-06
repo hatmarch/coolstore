@@ -1,17 +1,17 @@
-POST http://localhost:8080/api/inventory
-# POST http://catalog-coolstore-test.apps.cluster-6141.6141.sandbox1484.opentlc.com/api/products
+# POST http://localhost:8080/api/inventory
+POST http://inventory-coolstore-test.apps.cluster-6141.6141.sandbox1484.opentlc.com/api/inventory/
 Content-Type: application/json
 
 [
     {
         "itemId": "1",
-        "location": "Boston1",
+        "location": "Boston",
         "link": "http://www.yahoo.com/",
         "quantity": 10
     },
     {
         "itemId": "2",
-        "location": "New York2",
+        "location": "New York",
         "link": "http://www.google.com/",
         "quantity": 20
     }
@@ -20,3 +20,7 @@ Content-Type: application/json
 ###
 
 GET http://localhost:8080/api/inventory
+
+###
+
+GET http://inventory-coolstore-test.apps.cluster-6141.6141.sandbox1484.opentlc.com/api/inventory/
