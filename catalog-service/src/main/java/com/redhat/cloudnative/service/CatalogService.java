@@ -22,7 +22,6 @@ public class CatalogService {
     @Autowired
     private ProductRepository repository;
 
-    //TODO: Autowire Inventory Client
     @Autowired
     InventoryClient inventoryClient;
 
@@ -68,8 +67,5 @@ public class CatalogService {
     {
         this.repository.save(product);
     } 
-
-    //TODO: Add Callback Factory Component
-
 
 }
