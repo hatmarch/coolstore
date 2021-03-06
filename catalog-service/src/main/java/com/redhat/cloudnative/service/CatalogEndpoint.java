@@ -39,7 +39,6 @@ public class CatalogEndpoint {
 
     // FIXME: Secure this endpoint
     @RequestMapping(value = "/products", method = RequestMethod.POST, produces = "application/json")
-    @CrossOrigin
     public ResponseEntity<List<Product>> addProducts(@RequestBody @Valid List<Product> products,  BindingResult bindingResult) throws Exception {
         BindingErrorsResponse errors = new BindingErrorsResponse();
         HttpHeaders headers = new HttpHeaders();
